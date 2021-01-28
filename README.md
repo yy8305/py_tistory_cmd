@@ -1,7 +1,9 @@
 # 설정(config.json)
-- app id
-- redirect uri
-- 
+- blog_name : 블로그명 (https://[블로그명].tistory.com)
+- app_id : 앱 id (아래 #수동 api 토큰 받는 법 -> 1번 에서 확인 가능)
+- secret_key : 시크릿키 (아래 #수동 api 토큰 받는 법 -> 1번 에서 확인 가능)
+- access_code : 접근 코드, 한번 접속하면 사라짐 (아래 #수동 api 토큰 받는 법 -> 2번 에서 확인 가능)
+- access_token : 액세스 토큰  (아래 #수동 api 토큰 받는 법 -> 3번 에서 확인 가능)
 
 # 모듈 다운로드
 ```python
@@ -9,7 +11,7 @@ pip install pyfiglet
 ```
 
 
-# 수동 api 토큰 받는 법
+# 수동 api 토큰 받는 법 (토큰 유지시간 = 1시간)
 1. https://www.tistory.com/guide/api/manage/register 접속해서 앱등록 ( 앱등록후 앱관리에서 app id, secret key 확인 가능)
 2. https://www.tistory.com/oauth/authorize?client_id=[App id]&redirect_uri=[앱등록에서 입력한 redirect url]&response_type=code&state=someValue 접속하면 코드 확인 가능
 3. https://www.tistory.com/oauth/access_token?client_id=[App id]&client_secret=[Secret key]&redirect_uri=[앱등록에서 입력한 redirect url]&code=[2번에서 얻은 코드 값]&grant_type=authorization_code 해당 url 접속하여 access token 확인 가능
@@ -36,5 +38,7 @@ pip install pyfiglet
   - https://github.com/adunStudio/TistoryHelper
 - 입력 예제
   - https://kimmj.github.io/python/python-beautiful-cli/
+- setup.py 설정
+  - https://item4.blog/2015-11-21/Arguments-of-setuptools.setup/
 
 

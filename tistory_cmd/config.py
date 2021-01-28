@@ -1,10 +1,10 @@
 import json, os
 
-print('config init')
 home_dir = os.path.expanduser('~')
 base_dir = home_dir + '\\.tistory_cmd'
 config_file = base_dir + '\\config.json'
 config_json = dict()
+config_json['blog_name'] = ''
 config_json['app_id'] = ''
 config_json['secret_key'] = ''
 config_json['access_code'] = ''
@@ -29,6 +29,22 @@ def set_config():
 
 
 def reset_access_token():
+    print('==================ERROR==================')
+    print('token이 만료되었습니다.')
     config['access_code'] = ''
     config['access_token'] = ''
+    set_config()
+    exit(1)
+
+
+if ( (not config['app_id']) or (not config['secret_key']) ):
+    print('==================USAGE==================')
+    print('app_id, secret_key 은(는) 필수 설정 입니다.')
+    print('https://www.tistory.com/guide/api/manage/register 에서 확인가능')
+    print('README.md 설명 참고')
+    print('==================input==================')
+    if (not config['app_id']):
+        config['app_id'] = input("app_id : ")
+    if (not config['secret_key']):
+        config['secret_key'] = input("secret_key : ")
     set_config()
