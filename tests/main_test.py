@@ -1,26 +1,33 @@
 from tistory_cmd import *
 
 USAGE = """USAGE:
-    tistory post
-
-    tistory category <blog_name>
-    tistory post <blog_name> <category_id> <file_path>"""
+    # 블로그 정보 보기
+    tistory_cmd info
+    
+    # 카테고리 목록 보기
+    tistory_cmd category
+    
+    # 글쓰기
+    tistory_cmd post <category_id> <제목> <태그>"""
 
 
 def main():
-    command = 'category_list'
+    if len(sys.argv) < 2:
+        print(USAGE, file=sys.stderr)
+        return
+
+    command = sys.argv[1]
     auth = Auth()
+
     blog = Blog()
-    if command == 'login':
-        print('login')
-    elif command == 'info':
+    if command == 'info':
         blog.info()
-    elif command == 'category_list':
+    elif command == 'category':
+        blog.category_list()
+    elif command == 'post':
         blog.category_list()
     else:
         print(USAGE, file=sys.stderr)
         return
 
-
-if __name__ == '__main__':
-    main()
+main()
