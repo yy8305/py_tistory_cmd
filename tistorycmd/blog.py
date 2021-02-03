@@ -1,11 +1,10 @@
 from . import config
-import requests, json
+import requests, json, os, re
 
 
-class Tis_blog_post:
+class Blog:
     def __init__(self):
         self.output_type = 'json'
-        print('blog init')
 
     # 블로그 정보 출력
     def info(self):
@@ -40,7 +39,6 @@ class Tis_blog_post:
         url = 'https://www.tistory.com/apis/blog/info'
         data = {'access_token': config.config['access_token'], 'output': self.output_type}
         res = requests.get(url, params=data)
-        print(res.url)
         if res.status_code == 200:
             print(json.dumps(res.json(), indent=4, ensure_ascii=False))
 
@@ -72,7 +70,7 @@ class Tis_blog_post:
             print(json.dumps(res.json(), indent=4, ensure_ascii=False))
 
     # 블로그에 글쓰기
-    def post_write(self, category_id, title, content, tag):
+    def post_write(self, history_file, title, content, category_id, tag):
         url = 'https://www.tistory.com/apis/post/write'
         visibility = 3
         published = ''
@@ -95,8 +93,83 @@ class Tis_blog_post:
                 'content': content, 'visibility': visibility, 'category': category_id, 'published': published,
                 'slogan': slogan, 'tag': tag, 'acceptComment': acceptComment, 'password': password}
         res = requests.post(url, data=data)
-        print(res.url)
         if res.status_code == 200:
-            print(res.json())
+            history_json = dict()
+            history_json['postId'] = res.json()["tistory"]["postId"]
+            history_json['url'] = res.json()["tistory"]["url"]
+
+            if not os.path.exists(history_file):
+                with open(history_file, 'w', encoding='utf-8') as make_file:
+                    json.dump(history_json, make_file, indent="\t")
+
+            print('Post Registration Successful')
+            print(res.json()["tistory"]["url"])
         else:
+            print('Post Registration Fail')
             print(res.json())
+
+    # 블로그에 글수정
+    def post_edit(self, history_file, title, content, category_id, tag):
+        url = 'https://www.tistory.com/apis/post/modify'
+        visibility = 3
+        published = ''
+        slogan = ''
+        acceptComment = 1
+        password = ''
+        with open(history_file, 'r') as f:
+            history = json.load(f)
+            postId = history['postId']
+        '''
+        blogName: Blog Name (필수)
+        title: 글 제목 (필수)
+        content: 글 내용
+        visibility: 발행상태 (0: 비공개 - 기본값, 1: 보호, 3: 발행)
+        category: 카테고리 아이디 (기본값: 0)
+        published: 발행시간 (TIMESTAMP 이며 미래의 시간을 넣을 경우 예약. 기본값: 현재시간)
+        slogan: 문자 주소
+        tag: 태그 (',' 로 구분)
+        acceptComment: 댓글 허용 (0, 1 - 기본값)
+        password: 보호글 비밀번호
+        '''
+        data = {'access_token': config.config['access_token'], 'output': self.output_type,
+                'postId': postId,
+                'blogName': config.config['blog_name'], 'title': title,
+                'content': content, 'visibility': visibility, 'category': category_id, 'published': published,
+                'slogan': slogan, 'tag': tag, 'acceptComment': acceptComment, 'password': password}
+        res = requests.post(url, data=data)
+        if res.status_code == 200:
+            print('Post Modification Successful')
+            print(res.json()["tistory"]["url"])
+        else:
+            print('Post Modification Fail')
+            print(res.json())
+            print('.tistory 파일 삭제후 다시 시도해주세요')
+
+    # 파일 업로드
+    def file_upload(self, line, dir_path):
+        """
+            POST https://www.tistory.com/apis/post/attach?
+            access_token={access-token}
+            &blogName={blog-name}
+            [uploadedfile]
+            blogName: Blog Name 입니다.
+            uploadedfile: 업로드할 파일 (multipart/form-data)
+        """
+        # 파일명
+        name_grp = re.search('(\!\[\s*)(\w+)(\s*\])(\(\s*)([^http:\/\/].*)(\s*\))', line)
+        if(name_grp):
+            file_name = name_grp.group(5)
+
+            # 업로드
+            files = {"uploadedfile": open(os.path.abspath(dir_path + file_name), 'rb')}
+            url = 'https://www.tistory.com/apis/post/attach'
+            data = {'access_token': config.config['access_token'], 'blogName': config.config['blog_name'], 'output': self.output_type}
+            res = requests.post(url, params=data, files=files)
+
+            # 업로드된 url로 변경
+            line = re.sub('(\!\[\s*)(\w+)(\s*\])(\(\s*)([^http:\/\/].*)(\s*\))', '\\1\\2\\3(' + res.json()["tistory"]["url"] + ')',line)
+
+        return line
+
+if __name__ == '__main__':
+    blog = Blog()

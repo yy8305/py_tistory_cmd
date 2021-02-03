@@ -2,5 +2,5 @@
 *config.json
 build/*
 dist/*
-tistory_cmd.egg-info/*
+*.egg-info/*
 *__pycache__*
