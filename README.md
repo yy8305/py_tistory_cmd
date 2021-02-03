@@ -1,5 +1,6 @@
 # tistorycmd
-- markdown 형식으로 작성된 파일을 html 형식으로 변환하여 티스토리에 업로드 해줍니다.
+- markdown 형식으로 작성된 파일을 html 형식으로 변환하여 티스토리에 업로드 해줍니다.  
+
 [![PyPI - Version](https://img.shields.io/pypi/v/tistorycmd?style=for-the-badge)](https://pypi.org/project/tistorycmd)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/tistorycmd?label=DOWNLOADS&style=for-the-badge)](https://pypi.org/project/tistorycmd)
 
