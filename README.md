@@ -23,8 +23,11 @@ tistorycmd info
 # 카테고리 목록 보기
 tistorycmd category
 
-# 글쓰기
+# 글쓰기, 모든 내용수정시
 tistorycmd post <제목> <내용|파일경로> <category_id> <태그>
+
+# 내용만 수정
+tistorycmd update <내용|파일경로>
 ```
 
 # 사용시 주의사항
