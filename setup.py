@@ -11,7 +11,7 @@ def long_description():
 # 설치 : python setup.py install
 setuptools.setup(
     name="tistorycmd", # 패키지 이름 (※ 이름에 "-" 가 들어가면 "_"(언더바)로 바뀜. 되도록 영문자만 넣기)
-    version="0.2.4", # 버전
+    version="0.2.5", # 버전
     license='MIT', # 라이센스
     author="hongpark",  # 패키지 제작자 이름
     author_email="yy8305@naver.com",  # 패키지 제작자 이메일

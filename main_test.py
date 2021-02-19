@@ -34,7 +34,7 @@ def main():
             return
 
         cont_path = os.path.abspath(sys.argv[3])  # 내용 파일 경로
-        history_file = os.path.dirname(cont_path) + '\\.tistory'  # 기존 등록내역파일
+        history_file = os.path.dirname(cont_path) + os.sep + '.tistory'  # 기존 등록내역파일
 
         title = sys.argv[2]  #제목
         category = (len(sys.argv) > 4) and sys.argv[4] or ''  #카테고리 (필수 x)
@@ -71,7 +71,7 @@ def main():
             return
 
         cont_path = os.path.abspath(sys.argv[2])  # 내용 파일 경로
-        history_file = os.path.dirname(cont_path) + '\\.tistory'  # 기존 등록내역파일
+        history_file = os.path.dirname(cont_path) + os.sep + '.tistory'  # 기존 등록내역파일
 
         # history 파일이 없을경우
         if not os.path.exists(history_file):

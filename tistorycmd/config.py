@@ -1,8 +1,8 @@
 import json, os
 
 home_dir = os.path.expanduser('~')
-base_dir = home_dir + '\\.tistorycmd'
-config_file = base_dir + '\\config.json'
+base_dir = home_dir + os.sep + '.tistorycmd'
+config_file = base_dir + os.sep + 'config.json'
 config_json = dict()
 config_json['blog_name'] = ''
 config_json['app_id'] = ''
